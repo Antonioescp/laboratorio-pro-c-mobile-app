@@ -1,16 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    // Support for navigation with safe args
+    id 'androidx.navigation.safeargs.kotlin'
+
+    // Support for kotlin annotation processing tool
+    id 'kotlin-kapt'
 }
 
 android {
     namespace 'com.gameloop.laboratorioclinicoproc'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.gameloop.laboratorioclinicoproc"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,15 +36,43 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    // Enabling data binding
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.core:core-ktx:$version_kotlin"
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    // Kotlin coroutines support
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
+
+    // Navigation support
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_nav"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_nav"
+
+    // Better lifecycle handling
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
+
+    // Using Timber for simpler logging
+    implementation "com.jakewharton.timber:timber:$version_timber"
+
+    // Room support in case caching is needed
+    implementation "androidx.room:room-runtime:$version_room"
+    annotationProcessor "androidx.room:room-compiler:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+
+    // Room support for kotlin coroutines
+    implementation "androidx.room:room-ktx:$version_room"
 }
