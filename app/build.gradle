@@ -75,4 +75,7 @@ dependencies {
 
     // Room support for kotlin coroutines
     implementation "androidx.room:room-ktx:$version_room"
+
+    // Recycler view
+    implementation "androidx.recyclerview:recyclerview:$version_recycler_view"
 }
