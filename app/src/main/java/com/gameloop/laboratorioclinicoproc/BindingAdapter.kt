@@ -1,5 +1,6 @@
 package com.gameloop.laboratorioclinicoproc
 
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -45,5 +46,15 @@ fun RadioGroup.getSex(): Sex? {
         R.id.rbMale -> Sex.MALE
         R.id.rbFemale -> Sex.FEMALE
         else -> null
+    }
+}
+
+@BindingAdapter("patient_sex")
+fun ImageView.setPatientSex(sex: Sex?) {
+    sex?.let {
+        setImageResource(when(sex){
+            Sex.MALE -> R.drawable.ic_baseline_male_24_tint
+            Sex.FEMALE -> R.drawable.ic_baseline_female_24
+        })
     }
 }
