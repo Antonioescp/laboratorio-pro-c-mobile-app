@@ -5,15 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentMyPatientsBinding
-import com.gameloop.laboratorioclinicoproc.views.home.HomeFragmentDirections
 
 class MyPatientsFragment : Fragment() {
     private lateinit var binding: FragmentMyPatientsBinding
@@ -32,10 +29,25 @@ class MyPatientsFragment : Fragment() {
     ): View {
         binding = FragmentMyPatientsBinding.inflate(layoutInflater)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         setUpPatientsView()
+        setUpAddPatientButton()
 
         return binding.root
+    }
+
+    private fun setUpAddPatientButton() {
+        viewModel.eventNavigateToAddPatient.observe(viewLifecycleOwner) { shouldNavigate ->
+            shouldNavigate?.let {
+                if (shouldNavigate) {
+                    val action = MyPatientsFragmentDirections
+                        .actionMyPatientsFragmentToSignUpFragment()
+                    findNavController().navigate(action)
+                    viewModel.onNavigateToAddPatientComplete()
+                }
+            }
+        }
     }
 
     private fun setUpPatientsView() {
