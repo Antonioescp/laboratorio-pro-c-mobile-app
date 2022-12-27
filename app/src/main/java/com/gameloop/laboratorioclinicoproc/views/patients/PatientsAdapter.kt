@@ -20,8 +20,11 @@ class PatientsAdapter : ListAdapter<Patient, PatientsAdapter.ViewHolder>(DiffCal
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding = ListItemPatientBinding.inflate(inflater)
+                val binding = ListItemPatientBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return ViewHolder(binding)
             }
         }

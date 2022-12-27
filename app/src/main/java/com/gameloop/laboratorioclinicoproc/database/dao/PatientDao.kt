@@ -18,6 +18,9 @@ interface PatientDao {
     @Query("SELECT * FROM patients WHERE id = :id")
     suspend fun getById(id: Long): Patient?
 
+    @Query("DELETE FROM patients WHERE id = :id")
+    suspend fun delete(id: Long)
+
     @Query("SELECT * FROM patients")
     fun getAll(): LiveData<List<Patient>>
 

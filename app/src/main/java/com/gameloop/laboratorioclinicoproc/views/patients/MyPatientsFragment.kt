@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentMyPatientsBinding
+import com.gameloop.laboratorioclinicoproc.views.home.HomeFragmentDirections
 
 class MyPatientsFragment : Fragment() {
     private lateinit var binding: FragmentMyPatientsBinding

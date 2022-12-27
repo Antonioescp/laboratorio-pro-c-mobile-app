@@ -3,6 +3,7 @@ package com.gameloop.laboratorioclinicoproc
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Sex
@@ -56,5 +57,17 @@ fun ImageView.setPatientSex(sex: Sex?) {
             Sex.MALE -> R.drawable.ic_baseline_male_24_tint
             Sex.FEMALE -> R.drawable.ic_baseline_female_24
         })
+    }
+}
+
+@BindingAdapter("patient_sex_at_end")
+fun TextView.setPatientTextAtEnd(sex: Sex?) {
+    sex?.let {
+        val drawable = ContextCompat.getDrawable(context, when (sex) {
+            Sex.MALE -> R.drawable.ic_baseline_male_24_tint
+            Sex.FEMALE -> R.drawable.ic_baseline_female_24
+        })
+
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
     }
 }

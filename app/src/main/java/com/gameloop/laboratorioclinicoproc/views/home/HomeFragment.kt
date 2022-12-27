@@ -1,19 +1,17 @@
 package com.gameloop.laboratorioclinicoproc.views.home
 
+import android.animation.LayoutTransition
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.PagerAdapter
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentHomeBinding
 import com.gameloop.laboratorioclinicoproc.views.laboratorytests.TestsFragment
 import com.gameloop.laboratorioclinicoproc.views.patients.MyPatientsFragment
@@ -24,17 +22,38 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
+    private val viewModel: HomeViewModel by lazy {
+        ViewModelProvider(this)[HomeViewModel::class.java]
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         setUpViewPager()
         setUpTabLayout()
+        setUpAnimations()
+
+        viewModel.eventNavigateToAddUser.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    val action = HomeFragmentDirections.actionHomeFragmentToSignUpFragment()
+                    findNavController().navigate(action)
+                    viewModel.navigateToAddUserComplete()
+                }
+            }
+        }
 
         return binding.root
+    }
+
+    private fun setUpAnimations() {
+        binding.flContainer.layoutTransition = LayoutTransition()
     }
 
     /**
@@ -60,6 +79,13 @@ class HomeFragment : Fragment() {
         binding.homePager.registerOnPageChangeCallback( object: OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.homeTabLayout.selectTab(binding.homeTabLayout.getTabAt(position))
+
+                /* updating fab visibility */
+                if (position == 0) {
+                    viewModel.onEnterPatientsFragment()
+                } else {
+                    viewModel.onExitPatientsFragment()
+                }
             }
         })
     }
