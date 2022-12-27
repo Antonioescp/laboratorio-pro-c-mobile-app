@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Laboratorio Clínico Pro C</string>
+    <string name="sign_up">Registro</string>
+    <string name="name">Nombre</string>
+    <string name="format_required">%s*</string>
+    <string name="email">Correo electrónico</string>
+    <string name="age">Edad</string>
+    <string name="sex">Sexo</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="chronic_diseases">Enfermedades crónicas</string>
+    <string name="sign_up_action">Registrarse</string>
+    <string name="field_is_error">%s no puede estar %s</string>
+    <string name="field_have_error">%s no puede contener %s</string>
+    <string name="field_not_having_error">%s debe contener %s</string>
+    <string name="cant_be_empty">No puede estar vacío</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

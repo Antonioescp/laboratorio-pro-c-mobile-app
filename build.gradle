@@ -8,6 +8,7 @@ buildscript {
         version_kotlin = "1.9.0"
         version_kotlin_coroutines = "1.6.1"
         version_recycler_view = "1.2.1"
+        version_material_ui = "1.7.0"
     }
 
     dependencies {
@@ -17,6 +18,9 @@ buildscript {
 
     repositories {
         google()
+
+        // For material UI support
+        mavenCentral()
     }
 }
 
