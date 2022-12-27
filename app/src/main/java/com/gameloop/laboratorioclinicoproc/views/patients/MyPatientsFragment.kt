@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
+import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentMyPatientsBinding
 import com.gameloop.laboratorioclinicoproc.views.home.HomeFragmentDirections
 
@@ -37,7 +39,12 @@ class MyPatientsFragment : Fragment() {
     }
 
     private fun setUpPatientsView() {
-        val adapter = PatientsAdapter()
+        val adapter = PatientsAdapter(object: PatientsAdapter.ClickHandler{
+            override fun onDelete(patient: Patient) {
+                viewModel.deletePatient(patient)
+            }
+        })
+
         binding.rvPatients.adapter = adapter
         binding.rvPatients.layoutManager = LinearLayoutManager(
             requireActivity(),

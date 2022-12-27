@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.ListItemPatientBinding
 
-class PatientsAdapter : ListAdapter<Patient, PatientsAdapter.ViewHolder>(DiffCallback()) {
+class PatientsAdapter(private val clickHandler: ClickHandler)
+    : ListAdapter<Patient, PatientsAdapter.ViewHolder>(DiffCallback()) {
 
     class ViewHolder private constructor(private val binding: ListItemPatientBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(patient: Patient) {
+        fun bind(patient: Patient, clickHandler: ClickHandler) {
             binding.patient = patient
+            binding.ivDelete.setOnClickListener { clickHandler.onDelete(patient) }
+            binding.root.setOnClickListener { clickHandler.onOpen(patient) }
             binding.executePendingBindings()
         }
 
@@ -38,12 +41,16 @@ class PatientsAdapter : ListAdapter<Patient, PatientsAdapter.ViewHolder>(DiffCal
         override fun areContentsTheSame(oldItem: Patient, newItem: Patient): Boolean {
             return oldItem == newItem
         }
+    }
 
+    interface ClickHandler {
+        fun onOpen(patient: Patient) {}
+        fun onDelete(patient: Patient) {}
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
         = ViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
-        = holder.bind(getItem(position))
+        = holder.bind(getItem(position), clickHandler)
 }
