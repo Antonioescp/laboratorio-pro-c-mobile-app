@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
+import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentSignUpBinding
 import com.gameloop.laboratorioclinicoproc.validateEmpty
 import com.gameloop.laboratorioclinicoproc.validatePredicate
@@ -19,10 +21,19 @@ import com.gameloop.laboratorioclinicoproc.validateRegex
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
 
+    private val args by navArgs<SignUpFragmentArgs>()
+
     private val viewModel: SignUpViewModel by lazy {
+
+        // Getting data source
         val app = requireActivity().application
         val patientDao = LabDatabase.getInstance(app).patients
-        val factory = SignUpViewModelFactory(patientDao)
+
+        // Getting current patient
+        val newPatient = args.newPatient?.copy() ?: Patient()
+
+        // Creating view model
+        val factory = SignUpViewModelFactory(newPatient, patientDao)
         ViewModelProvider(this, factory)[SignUpViewModel::class.java]
     }
 
@@ -37,6 +48,16 @@ class SignUpFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        setUpSignUpButton()
+
+        return binding.root
+    }
+
+    /**
+     * Listens to sign up button click, creates or updates a patient when clicked
+     * and navigates back
+     */
+    private fun setUpSignUpButton() {
         // Listening to sign up button click
         viewModel.eventSignUp.observe(viewLifecycleOwner) { event ->
             if (event) {
@@ -47,8 +68,6 @@ class SignUpFragment : Fragment() {
                 viewModel.onSignUpComplete()
             }
         }
-
-        return binding.root
     }
 
     private fun validateFields(): Boolean {

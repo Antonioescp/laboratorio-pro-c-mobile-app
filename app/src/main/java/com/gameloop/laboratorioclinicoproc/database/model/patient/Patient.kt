@@ -23,4 +23,4 @@ data class Patient(
 
     @ColumnInfo(name = "chronic_diseases")
     var chronicDiseases: String = ""
-)
+) : java.io.Serializable

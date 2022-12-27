@@ -55,6 +55,12 @@ class MyPatientsFragment : Fragment() {
             override fun onDelete(patient: Patient) {
                 viewModel.deletePatient(patient)
             }
+
+            override fun onOpen(patient: Patient) {
+                val action = MyPatientsFragmentDirections
+                    .actionMyPatientsFragmentToSignUpFragment(patient)
+                findNavController().navigate(action)
+            }
         })
 
         binding.rvPatients.adapter = adapter

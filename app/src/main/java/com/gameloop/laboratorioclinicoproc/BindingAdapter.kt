@@ -16,6 +16,8 @@ fun TextView.setAge(age: Int?) {
             if (age != current) {
                 text = age.coerceAtLeast(1).toString()
             }
+        } else {
+            text = age.coerceAtLeast(1).toString()
         }
     }
 }
