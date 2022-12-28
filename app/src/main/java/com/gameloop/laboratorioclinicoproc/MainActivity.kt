@@ -3,7 +3,6 @@ package com.gameloop.laboratorioclinicoproc
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setUpNavbar()
+        setUpActionBar()
         setUpBottomNavBar()
     }
 
@@ -28,11 +27,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpNavbar() {
+    private fun setUpActionBar() {
+        setSupportActionBar(binding.appBar)
         val navHost = supportFragmentManager.findFragmentById(binding.navHostFragment.id)
         navHost?.let {
-            val navController = navHost.findNavController()
-            NavigationUI.setupActionBarWithNavController(this, navController)
+            NavigationUI.setupActionBarWithNavController(this, navHost.findNavController())
         }
     }
 

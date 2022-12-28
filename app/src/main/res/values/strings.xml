@@ -9,7 +9,7 @@
     <string name="male">Masculino</string>
     <string name="female">Femenino</string>
     <string name="chronic_diseases">Enfermedades crónicas</string>
-    <string name="sign_up_action">Registrarse</string>
+    <string name="sign_up_action">Registrar</string>
     <string name="field_is_error">%s no puede estar %s</string>
     <string name="field_have_error">%s no puede contener %s</string>
     <string name="field_not_having_error">%s debe contener %s</string>
@@ -18,4 +18,5 @@
     <string name="tests">Exámenes</string>
     <string name="age_format">%d años</string>
     <string name="no_patients_msg">¡Hola! está algo vacío por aquí...\nRegistrate o registra a un ser querido\npara agendarle un exámen</string>
+    <string name="update_action">Actualizar</string>
 </resources>
