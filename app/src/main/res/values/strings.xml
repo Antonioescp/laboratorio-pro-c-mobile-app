@@ -17,4 +17,5 @@
     <string name="patients">Pacientes</string>
     <string name="tests">Exámenes</string>
     <string name="age_format">%d años</string>
+    <string name="no_patients_msg">¡Hola! está algo vacío por aquí...\nRegistrate o registra a un ser querido\npara agendarle un exámen</string>
 </resources>

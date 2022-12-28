@@ -8,17 +8,58 @@
                     name="viewModel"
                     type="com.gameloop.laboratorioclinicoproc.views.patients.MyPatientsViewModel"
                     />
+                <import type="android.view.View"/>
         </data>
         <FrameLayout
             android:id="@+id/flMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+                <!-- List of registered patients -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_patients"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/list_item_patient"
+                    android:visibility="@{viewModel.noPatients ? View.GONE : View.VISIBLE}"
                     />
+
+                <!-- Empty patients view -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:orientation="vertical"
+                    android:id="@+id/flEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/dark"
+                    android:visibility="@{viewModel.noPatients ? View.VISIBLE : View.GONE}"
+                    >
+                        <ImageView
+                            android:id="@+id/ivEmpty"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/tvEmpty"
+                            app:layout_constraintVertical_chainStyle="packed"
+                            app:tint="@color/darker"
+                            android:src="@drawable/ic_baseline_emoji_people_24"
+                            />
+                        <TextView
+                            android:id="@+id/tvEmpty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ivEmpty"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/no_patients_msg"
+                            android:textColor="@color/darker"
+                            />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- FAB to add patients -->
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_new_patient"
                     android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.gameloop.laboratorioclinicoproc.views.patients
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gameloop.laboratorioclinicoproc.database.dao.PatientDao
@@ -10,6 +11,12 @@ import kotlinx.coroutines.launch
 
 class MyPatientsViewModel(private val patientsDao: PatientDao) : ViewModel() {
     val patients = patientsDao.getAll()
+
+    val noPatients = Transformations.map(patients) {
+        it?.let {
+            it.isEmpty()
+        }
+    }
 
     private val _eventNavigateToAddPatient = MutableLiveData<Boolean>()
     val eventNavigateToAddPatient: LiveData<Boolean> = _eventNavigateToAddPatient
