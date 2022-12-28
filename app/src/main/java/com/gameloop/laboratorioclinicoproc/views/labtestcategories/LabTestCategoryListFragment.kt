@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
+import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentLabTestCategoryListBinding
 import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
 
@@ -31,7 +34,22 @@ class LabTestCategoryListFragment : Fragment() {
     }
 
     private fun setupLabTestList() {
-        val adapter = LabTestCategoryAdapter()
+        val adapter = LabTestCategoryAdapter(object: LabTestCategoryItemListener{
+            override fun onOpenRecommendations(labTestCategory: LabTestCategory) {
+                val action = LabTestCategoryListFragmentDirections
+                    .actionTestsFragmentToLabCategoryDetailFragment(labTestCategory)
+                findNavController().navigate(action)
+            }
+
+            override fun onOpenLabTests(labTestCategory: LabTestCategory) {
+                Toast.makeText(
+                    requireActivity(),
+                    "Openning available tests for ${labTestCategory.title}...",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+
         binding.rvLabTests.adapter = adapter
 
         viewModel.categories.observe(viewLifecycleOwner) {

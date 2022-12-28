@@ -21,4 +21,6 @@
     <string name="update_action">Actualizar</string>
     <string name="see_recommendations">Ver Recomendaciones</string>
     <string name="see_tests">Ver Exámenes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

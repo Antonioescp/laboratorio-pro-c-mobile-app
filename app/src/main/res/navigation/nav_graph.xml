@@ -29,5 +29,18 @@
         android:name="com.gameloop.laboratorioclinicoproc.views.labtestcategories.LabTestCategoryListFragment"
         android:label="@string/tests"
         tools:layout="@layout/fragment_lab_test_category_list"
-        />
+        >
+        <action
+            android:id="@+id/action_testsFragment_to_labCategoryDetailFragment"
+            app:destination="@id/labCategoryDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/labCategoryDetailFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.labtestcategoriesdetail.LabCategoryDetailFragment"
+        android:label="Detalles"
+        tools:layout="@layout/fragment_lab_category_detail">
+        <argument
+            android:name="labCategory"
+            app:argType="com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory" />
+    </fragment>
 </navigation>
