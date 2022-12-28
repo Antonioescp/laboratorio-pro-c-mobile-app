@@ -11,6 +11,7 @@ buildscript {
         version_material_ui = "1.7.0"
         version_google_services = "4.3.13"
         version_firebase_bom = "31.1.1"
+        version_glide = "4.14.2"
     }
 
     dependencies {

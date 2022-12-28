@@ -1,12 +1,8 @@
 package com.gameloop.laboratorioclinicoproc.views.labtestcategories
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.gameloop.laboratorioclinicoproc.database.LabDatabase
-import com.gameloop.laboratorioclinicoproc.database.repository.LabTestCategoryRepository
-import kotlinx.coroutines.launch
+import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
 
-class LabTestCategoryListViewModel(private val database: LabDatabase) : ViewModel() {
-    private val labTestCategoryRepository = LabTestCategoryRepository(database.labTestCategories)
-    val categories = labTestCategoryRepository.categories
+class LabTestCategoryListViewModel(private val categoryDatabase: LabNetworkService) : ViewModel() {
+    val categories = categoryDatabase.getLabTestCategories()
 }

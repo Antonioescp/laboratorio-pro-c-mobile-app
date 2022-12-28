@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
+import com.bumptech.glide.Glide
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Sex
 
 @BindingAdapter("age")
@@ -72,4 +73,9 @@ fun TextView.setPatientTextAtEnd(sex: Sex?) {
 
         setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
     }
+}
+
+@BindingAdapter("img_url")
+fun ImageView.setImgByUrl(url: String) {
+    Glide.with(this).load(url).into(this)
 }

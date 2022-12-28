@@ -8,14 +8,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentLabTestCategoryListBinding
+import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
 
 class LabTestCategoryListFragment : Fragment() {
     private lateinit var binding: FragmentLabTestCategoryListBinding
 
     private val viewModel: LabTestCategoryListViewModel by lazy {
-        val app = requireActivity().application
-        val db = LabDatabase.getInstance(app)
-        val factory = LabTestCategoryListViewModelFactory(db)
+        val factory = LabTestCategoryListViewModelFactory(LabNetworkService())
         ViewModelProvider(this, factory)[LabTestCategoryListViewModel::class.java]
     }
 

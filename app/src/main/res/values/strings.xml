@@ -19,4 +19,6 @@
     <string name="age_format">%d años</string>
     <string name="no_patients_msg">¡Hola! está algo vacío por aquí...\nRegistrate o registra a un ser querido\npara agendarle un exámen</string>
     <string name="update_action">Actualizar</string>
+    <string name="see_recommendations">Ver Recomendaciones</string>
+    <string name="see_tests">Ver Exámenes</string>
 </resources>
