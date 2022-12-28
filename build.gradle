@@ -9,11 +9,16 @@ buildscript {
         version_kotlin_coroutines = "1.6.1"
         version_recycler_view = "1.2.1"
         version_material_ui = "1.7.0"
+        version_google_services = "4.3.13"
+        version_firebase_bom = "31.1.1"
     }
 
     dependencies {
         // Navigation with safe args
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_nav"
+
+        // Firebase support
+        classpath "com.google.gms:google-services:$version_google_services"
     }
 
     repositories {

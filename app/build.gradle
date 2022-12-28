@@ -7,6 +7,9 @@ plugins {
 
     // Support for kotlin annotation processing tool
     id 'kotlin-kapt'
+
+    // Google services
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -81,4 +84,10 @@ dependencies {
 
     // Material UI
     implementation "com.google.android.material:material:$version_material_ui"
+
+    // Firebase support
+    implementation platform("com.google.firebase:firebase-bom:$version_firebase_bom")
+
+    // Firebase firestore support
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

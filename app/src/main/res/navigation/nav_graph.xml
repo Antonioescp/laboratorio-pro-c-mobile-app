@@ -26,8 +26,8 @@
     </fragment>
     <fragment
         android:id="@+id/testsFragment"
-        android:name="com.gameloop.laboratorioclinicoproc.views.laboratorytests.TestsFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.labtests.LabTestCategoryListFragment"
         android:label="@string/tests"
-        tools:layout="@layout/fragment_tests"
+        tools:layout="@layout/fragment_lab_test_category_list"
         />
 </navigation>

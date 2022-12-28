@@ -4,12 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.gameloop.laboratorioclinicoproc.database.dao.LabTestCategoryDao
 import com.gameloop.laboratorioclinicoproc.database.dao.PatientDao
+import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 
-@Database(entities = [Patient::class], version = 1, exportSchema = false)
+@Database(entities = [Patient::class, LabTestCategory::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class LabDatabase : RoomDatabase() {
     abstract val patients: PatientDao
+    abstract val labTestCategories: LabTestCategoryDao
 
     companion object {
         @Volatile
@@ -24,7 +30,8 @@ abstract class LabDatabase : RoomDatabase() {
                         context.applicationContext,
                         LabDatabase::class.java,
                         "lab"
-                    ).build()
+                    ).fallbackToDestructiveMigration()
+                        .build()
                     INSTANCE
                 }
             }
