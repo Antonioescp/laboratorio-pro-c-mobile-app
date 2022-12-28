@@ -1,17 +1,13 @@
-package com.gameloop.laboratorioclinicoproc.views.labtests
+package com.gameloop.laboratorioclinicoproc.views.labtestcategories
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentLabTestCategoryListBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class LabTestCategoryListFragment : Fragment() {
     private lateinit var binding: FragmentLabTestCategoryListBinding
@@ -30,10 +26,17 @@ class LabTestCategoryListFragment : Fragment() {
     ): View {
         binding = FragmentLabTestCategoryListBinding.inflate(layoutInflater)
 
-        viewModel.categories.observe(viewLifecycleOwner) { categories ->
-            binding.tvTest.text = "$categories"
-        }
+        setupLabTestList()
 
         return binding.root
+    }
+
+    private fun setupLabTestList() {
+        val adapter = LabTestCategoryAdapter()
+        binding.rvLabTests.adapter = adapter
+
+        viewModel.categories.observe(viewLifecycleOwner) {
+            it?.let { adapter.submitList(it) }
+        }
     }
 }

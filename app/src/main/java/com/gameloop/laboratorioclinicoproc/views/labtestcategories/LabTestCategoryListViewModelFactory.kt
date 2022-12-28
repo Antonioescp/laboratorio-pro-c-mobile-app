@@ -1,4 +1,4 @@
-package com.gameloop.laboratorioclinicoproc.views.labtests
+package com.gameloop.laboratorioclinicoproc.views.labtestcategories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

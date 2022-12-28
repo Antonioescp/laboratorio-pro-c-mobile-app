@@ -1,4 +1,4 @@
-package com.gameloop.laboratorioclinicoproc.views.labtests
+package com.gameloop.laboratorioclinicoproc.views.labtestcategories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +9,4 @@ import kotlinx.coroutines.launch
 class LabTestCategoryListViewModel(private val database: LabDatabase) : ViewModel() {
     private val labTestCategoryRepository = LabTestCategoryRepository(database.labTestCategories)
     val categories = labTestCategoryRepository.categories
-
-    init {
-        viewModelScope.launch {
-            labTestCategoryRepository.refreshCategories()
-        }
-    }
 }

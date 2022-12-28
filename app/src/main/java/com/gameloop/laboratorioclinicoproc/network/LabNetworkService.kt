@@ -7,7 +7,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-private val LAB_TEST_CATEGORY_COLLECTION = "LabTestCategory"
+private const val LAB_TEST_CATEGORY_COLLECTION = "LabTestCategory"
 
 class LabNetworkService {
     private val db = Firebase.firestore

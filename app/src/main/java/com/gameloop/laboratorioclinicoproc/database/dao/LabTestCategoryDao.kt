@@ -17,4 +17,10 @@ interface LabTestCategoryDao {
 
     @Query("SELECT * FROM lab_test_category")
     fun getAll(): LiveData<List<LabTestCategory>>
+
+    @Query("DELETE FROM lab_test_category")
+    suspend fun clear()
+
+    @Query("DELETE FROM lab_test_category WHERE title = :title")
+    suspend fun delete(title: String)
 }

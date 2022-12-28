@@ -5,7 +5,7 @@ import androidx.room.TypeConverter
 class Converters {
     @TypeConverter
     fun fromRecommendations(recommendations: List<String>): String {
-        return recommendations.reduce { acc, s -> "$acc;;$s" }
+        return recommendations.fold("") { acc, s -> "$acc;;$s" }
     }
 
     @TypeConverter
