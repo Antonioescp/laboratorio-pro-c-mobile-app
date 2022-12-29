@@ -37,7 +37,7 @@ class LabTestCategoryListFragment : Fragment() {
         val adapter = LabTestCategoryAdapter(object: LabTestCategoryItemListener{
             override fun onOpenRecommendations(labTestCategory: LabTestCategory) {
                 val action = LabTestCategoryListFragmentDirections
-                    .actionTestsFragmentToLabCategoryDetailFragment(labTestCategory)
+                    .actionTestsFragmentToLabCategoryDetailActivity(labTestCategory.title)
                 findNavController().navigate(action)
             }
 

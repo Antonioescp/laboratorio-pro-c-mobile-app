@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,32 @@ class LabNetworkService {
             isPersistenceEnabled = true
             cacheSizeBytes = FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED
         }
+    }
+
+    fun getLabTestCategory(title: String): LiveData<LabTestCategory> {
+        val category = MutableLiveData<LabTestCategory>()
+        serviceScope.launch {
+            // Get cache first
+            val cache = db.collection(LAB_TEST_CATEGORY_COLLECTION)
+                .whereEqualTo("title", title).get(Source.CACHE).await()
+            category.postValue(cache.toObjects<LabTestCategory>().first())
+
+            // Listen for changes
+            db.collection(LAB_TEST_CATEGORY_COLLECTION)
+                .whereEqualTo("title", title).addSnapshotListener{ snapshot, e ->
+                    if (e != null) {
+                        Timber.e("Network error: ${e.message}")
+                    } else {
+                        snapshot?.let {
+                            val value = snapshot.toObjects<LabTestCategory>().first()
+                            if (value != category.value) {
+                                category.postValue(value)
+                            }
+                        }
+                    }
+                }
+        }
+        return category
     }
 
     fun getLabTestCategories(): LiveData<List<LabTestCategory>> {

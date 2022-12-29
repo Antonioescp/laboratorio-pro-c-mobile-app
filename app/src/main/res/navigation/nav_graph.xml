@@ -31,16 +31,16 @@
         tools:layout="@layout/fragment_lab_test_category_list"
         >
         <action
-            android:id="@+id/action_testsFragment_to_labCategoryDetailFragment"
-            app:destination="@id/labCategoryDetailFragment" />
+            android:id="@+id/action_testsFragment_to_labCategoryDetailActivity"
+            app:destination="@id/labCategoryDetailActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/labCategoryDetailFragment"
-        android:name="com.gameloop.laboratorioclinicoproc.views.labtestcategoriesdetail.LabCategoryDetailFragment"
+    <activity
+        android:id="@+id/labCategoryDetailActivity"
+        android:name="com.gameloop.laboratorioclinicoproc.views.labtestcategoriesdetail.LabCategoryDetailActivity"
         android:label="Detalles"
-        tools:layout="@layout/fragment_lab_category_detail">
+        tools:layout="@layout/activity_lab_category_detail">
         <argument
-            android:name="labCategory"
-            app:argType="com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory" />
-    </fragment>
+            android:name="categoryTitle"
+            app:argType="string" />
+    </activity>
 </navigation>
