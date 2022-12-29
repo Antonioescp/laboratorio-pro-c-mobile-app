@@ -35,7 +35,7 @@ class LabNetworkService {
             // Get cache first
             val cache = db.collection(LAB_TEST_CATEGORY_COLLECTION)
                 .whereEqualTo("title", title).get(Source.CACHE).await()
-            category.postValue(cache.toObjects<LabTestCategory>().first())
+            category.postValue(cache.toObjects<LabTestCategory>().firstOrNull())
 
             // Listen for changes
             db.collection(LAB_TEST_CATEGORY_COLLECTION)
@@ -43,10 +43,10 @@ class LabNetworkService {
                     if (e != null) {
                         Timber.e("Network error: ${e.message}")
                     } else {
-                        snapshot?.let {
-                            val value = snapshot.toObjects<LabTestCategory>().first()
-                            if (value != category.value) {
-                                category.postValue(value)
+                        snapshot?.let { docs ->
+                            val value = docs.toObjects<LabTestCategory>().firstOrNull()
+                            value?.let { newValue ->
+                                if (value != category.value) category.postValue(newValue)
                             }
                         }
                     }

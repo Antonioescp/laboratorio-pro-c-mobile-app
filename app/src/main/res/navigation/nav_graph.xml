@@ -41,6 +41,7 @@
         tools:layout="@layout/activity_lab_category_detail">
         <argument
             android:name="categoryTitle"
-            app:argType="string" />
+            app:argType="string"
+            />
     </activity>
 </navigation>
