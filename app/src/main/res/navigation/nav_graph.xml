@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_testsFragment_to_labCategoryDetailActivity"
             app:destination="@id/labCategoryDetailActivity" />
+        <action
+            android:id="@+id/action_testsFragment_to_labTestFragment"
+            app:destination="@id/labTestFragment" />
     </fragment>
     <activity
         android:id="@+id/labCategoryDetailActivity"
@@ -44,4 +47,25 @@
             app:argType="string"
             />
     </activity>
+    <fragment
+        android:id="@+id/labTestFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.labtest.LabTestFragment"
+        android:label="@string/available_lab_tests"
+        tools:layout="@layout/fragment_lab_test" >
+        <action
+            android:id="@+id/action_labTestFragment_to_labTestDetailFragment"
+            app:destination="@id/labTestDetailFragment" />
+        <argument
+            android:name="labTestCategoryTitle"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/labTestDetailFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.labtestdetail.LabTestDetailFragment"
+        android:label="@string/test_detial"
+        tools:layout="@layout/fragment_lab_test_detail" >
+        <argument
+            android:name="labTest"
+            app:argType="com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest" />
+    </fragment>
 </navigation>

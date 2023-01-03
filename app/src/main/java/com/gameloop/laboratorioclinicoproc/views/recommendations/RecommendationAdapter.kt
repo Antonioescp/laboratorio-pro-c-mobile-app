@@ -2,6 +2,7 @@ package com.gameloop.laboratorioclinicoproc.views.recommendations
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView

@@ -1,18 +1,18 @@
 package com.gameloop.laboratorioclinicoproc.views.patients
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.LabDatabase
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentMyPatientsBinding
 
-class MyPatientsFragment : Fragment() {
+class MyPatientsFragment : Fragment(), MenuProvider {
     private lateinit var binding: FragmentMyPatientsBinding
 
     private val viewModel: MyPatientsViewModel by lazy {
@@ -35,6 +35,16 @@ class MyPatientsFragment : Fragment() {
         setUpAddPatientButton()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().addMenuProvider(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requireActivity().removeMenuProvider(this)
     }
 
     private fun setUpAddPatientButton() {
@@ -74,6 +84,22 @@ class MyPatientsFragment : Fragment() {
             it?.let {
                 adapter.submitList(it)
             }
+        }
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_patients, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.miAddPatient -> {
+                val action = MyPatientsFragmentDirections
+                    .actionMyPatientsFragmentToSignUpFragment(null)
+                findNavController().navigate(action)
+                true
+            }
+            else -> false
         }
     }
 }

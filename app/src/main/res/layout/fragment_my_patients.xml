@@ -60,16 +60,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- FAB to add patients -->
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_new_patient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_add_24"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:contentDescription="Add a new patient"
-                    android:onClick="@{() -> viewModel.onNavigateToAddPatient()}"
-                    />
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/fab_new_patient"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/ic_baseline_add_24"-->
+<!--                    android:layout_gravity="bottom|end"-->
+<!--                    android:layout_marginEnd="20dp"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:contentDescription="Add a new patient"-->
+<!--                    android:onClick="@{() -> viewModel.onNavigateToAddPatient()}"-->
+<!--                    />-->
         </FrameLayout>
 </layout>

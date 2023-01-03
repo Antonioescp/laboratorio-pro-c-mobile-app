@@ -2,12 +2,20 @@ package com.gameloop.laboratorioclinicoproc.views.labtestcategoriesdetail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navArgs
 import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
 import com.gameloop.laboratorioclinicoproc.databinding.ActivityLabCategoryDetailBinding
+import com.gameloop.laboratorioclinicoproc.views.labtestcategories.LabTestCategoryListFragmentDirections
 import com.gameloop.laboratorioclinicoproc.views.recommendations.RecommendationAdapter
 
 class LabCategoryDetailActivity : AppCompatActivity() {
@@ -27,6 +35,7 @@ class LabCategoryDetailActivity : AppCompatActivity() {
         viewModel.currentCategory.observe(this) { it?.let { binding.category = it } }
 
         setUpRecommendationsList()
+        setSupportActionBar(binding.tbActionBar)
     }
 
     private fun setUpRecommendationsList() {

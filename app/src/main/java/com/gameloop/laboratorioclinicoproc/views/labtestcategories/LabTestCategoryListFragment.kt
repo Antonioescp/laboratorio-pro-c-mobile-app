@@ -17,7 +17,7 @@ class LabTestCategoryListFragment : Fragment() {
     private lateinit var binding: FragmentLabTestCategoryListBinding
 
     private val viewModel: LabTestCategoryListViewModel by lazy {
-        val factory = LabTestCategoryListViewModelFactory(LabNetworkService())
+        val factory = LabTestCategoryListViewModelFactory(LabNetworkService.instance)
         ViewModelProvider(this, factory)[LabTestCategoryListViewModel::class.java]
     }
 
@@ -42,11 +42,9 @@ class LabTestCategoryListFragment : Fragment() {
             }
 
             override fun onOpenLabTests(labTestCategory: LabTestCategory) {
-                Toast.makeText(
-                    requireActivity(),
-                    "Openning available tests for ${labTestCategory.title}...",
-                    Toast.LENGTH_LONG
-                ).show()
+                val action = LabTestCategoryListFragmentDirections
+                    .actionTestsFragmentToLabTestFragment(labTestCategory.title)
+                findNavController().navigate(action)
             }
         })
 

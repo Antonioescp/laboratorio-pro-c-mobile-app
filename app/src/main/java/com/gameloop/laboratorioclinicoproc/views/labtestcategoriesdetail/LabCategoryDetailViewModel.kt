@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
 
 class LabCategoryDetailViewModel(categoryTitle: String) : ViewModel() {
-    val currentCategory = LabNetworkService().getLabTestCategory(categoryTitle)
+    val currentCategory = LabNetworkService.instance.getLabTestCategory(categoryTitle)
 }

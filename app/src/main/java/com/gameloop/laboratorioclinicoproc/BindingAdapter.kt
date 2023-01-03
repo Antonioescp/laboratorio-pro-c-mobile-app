@@ -79,3 +79,8 @@ fun TextView.setPatientTextAtEnd(sex: Sex?) {
 fun ImageView.setImgByUrl(url: String) {
     Glide.with(this).load(url).into(this)
 }
+
+@BindingAdapter("price")
+fun TextView.setPrice(price: Double) {
+    text = String.format("C\$%.2f", price)
+}

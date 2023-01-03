@@ -2,12 +2,12 @@ package com.gameloop.laboratorioclinicoproc.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
+import com.gameloop.laboratorioclinicoproc.database.model.toLabTests
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Source
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
-import com.google.firebase.firestore.ktx.toObjects
+import com.google.firebase.firestore.ktx.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +16,23 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
 private const val LAB_TEST_CATEGORY_COLLECTION = "LabTestCategory"
+private const val LAB_TEST_COLLECTION = "LabTest"
 
 class LabNetworkService {
     private val serviceScope = CoroutineScope(Dispatchers.IO)
     private val db = Firebase.firestore
+
+    companion object {
+        @Volatile
+        private lateinit var INSTANCE: LabNetworkService
+        val instance: LabNetworkService
+            get() {
+                if (!::INSTANCE.isInitialized) {
+                    INSTANCE = LabNetworkService()
+                }
+                return INSTANCE
+            }
+    }
 
     init {
         // Keep latest results cached
@@ -27,6 +40,50 @@ class LabNetworkService {
             isPersistenceEnabled = true
             cacheSizeBytes = FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED
         }
+    }
+
+    fun getLabTestsByCategory(categoryTitle: String): LiveData<List<LabTest>> {
+        val testsByCategory = MutableLiveData<List<LabTest>>()
+
+        serviceScope.launch {
+            // getting category
+            val category = db.collection(LAB_TEST_CATEGORY_COLLECTION)
+                .whereEqualTo("title", categoryTitle)
+                .limit(1)
+                .get(Source.CACHE)
+                .await()
+                .documents
+                .first()
+                .reference
+
+            // getting lab test from cache
+            val testsFromCache = db.collection(LAB_TEST_COLLECTION)
+                .whereEqualTo("category", category)
+                .get(Source.CACHE)
+                .await()
+                .toLabTests(Source.CACHE)
+
+            // assigning found value if any
+            testsByCategory.postValue(testsFromCache)
+
+            // Getting data from server
+            db.collection(LAB_TEST_COLLECTION)
+                .whereEqualTo("category", category)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        Timber.e("Network error: %s", error.message)
+                        return@addSnapshotListener
+                    }
+
+                    serviceScope.launch {
+                        snapshot?.let {
+                            testsByCategory.postValue(it.toLabTests(Source.SERVER))
+                        }
+                    }
+                }
+        }
+
+        return testsByCategory
     }
 
     fun getLabTestCategory(title: String): LiveData<LabTestCategory> {

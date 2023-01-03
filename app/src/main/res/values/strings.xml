@@ -23,4 +23,9 @@
     <string name="see_tests">Ver Exámenes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="available_lab_tests">Exámenes disponibles</string>
+    <string name="see">ver</string>
+    <string name="add_patient">Agregar paciente</string>
+    <string name="test_detial">Detalles de exámen</string>
+    <string name="no_recommendations_msg">No hay recomendaciones específicas para este exámen, ten en cuenta las recomendaciones generales.</string>
 </resources>
