@@ -92,7 +92,7 @@ class LabNetworkService {
             // Get cache first
             val cache = db.collection(LAB_TEST_CATEGORY_COLLECTION)
                 .whereEqualTo("title", title).get(Source.CACHE).await()
-            category.postValue(cache.toObjects<LabTestCategory>().firstOrNull())
+            category.postValue(cache.toObjects<LabTestCategory>().firstOrNull() ?: LabTestCategory())
 
             // Listen for changes
             db.collection(LAB_TEST_CATEGORY_COLLECTION)

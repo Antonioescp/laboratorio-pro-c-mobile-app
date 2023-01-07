@@ -9,7 +9,7 @@ import com.gameloop.laboratorioclinicoproc.database.dao.PatientDao
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import kotlinx.coroutines.launch
 
-class MyPatientsViewModel(private val patientsDao: PatientDao) : ViewModel() {
+open class MyPatientsViewModel(private val patientsDao: PatientDao) : ViewModel() {
     val patients = patientsDao.getAll()
 
     val noPatients = Transformations.map(patients) {

@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 binding.bnMain.visibility = when (destination.id) {
                     R.id.myPatientsFragment -> View.VISIBLE
                     R.id.testsFragment -> View.VISIBLE
+                    R.id.appointmentsFragment -> View.VISIBLE
                     else -> View.GONE
                 }
             }

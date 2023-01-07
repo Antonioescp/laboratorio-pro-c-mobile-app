@@ -28,4 +28,13 @@
     <string name="add_patient">Agregar paciente</string>
     <string name="test_detial">Detalles de exámen</string>
     <string name="no_recommendations_msg">No hay recomendaciones específicas para este exámen, ten en cuenta las recomendaciones generales.</string>
+    <string name="appointments">Citas</string>
+    <string name="add_appointment">Agregar cita</string>
+    <string name="new_appointment">Nueva cita</string>
+    <string name="description">Descripción</string>
+    <string name="add_test">Agregar exámen</string>
+    <string name="total">Total</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
 </resources>

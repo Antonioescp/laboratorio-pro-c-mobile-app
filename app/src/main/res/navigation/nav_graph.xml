@@ -68,4 +68,24 @@
             android:name="labTest"
             app:argType="com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest" />
     </fragment>
+    <fragment
+        android:id="@+id/appointmentsFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.appointments.AppointmentsFragment"
+        android:label="@string/appointments"
+        tools:layout="@layout/fragment_appointments" >
+        <action
+            android:id="@+id/action_appointmentsFragment_to_appointmentDetailFragment"
+            app:destination="@id/appointmentDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appointmentDetailFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.appointments.detail.AppointmentDetailFragment"
+        android:label="@string/new_appointment"
+        tools:layout="@layout/fragment_appointment_detail" >
+        <argument
+            android:name="appointment"
+            app:argType="com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
