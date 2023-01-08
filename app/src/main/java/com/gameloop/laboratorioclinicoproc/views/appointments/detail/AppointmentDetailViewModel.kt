@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
+import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
 
 class AppointmentDetailViewModel : ViewModel() {
+
+    val labCategories = LabNetworkService.instance.getLabTestCategories()
+
     private var _arePatientsHidden = MutableLiveData(true)
     val arePatientsHidden: LiveData<Boolean>
         get() = _arePatientsHidden

@@ -19,7 +19,8 @@ class AppointmentPatientAdapter(private val listener: AppointmentPatientAdapter.
                 binding.patient = patientAppointments.first
 
                 binding.ivDelete.setOnClickListener { listener.onDelete(patientAppointments.first) }
-                binding.btnAddTest.setOnClickListener { listener.onAddLabTest(patientAppointments.second) }
+                binding.btnAddTest
+                    .setOnClickListener { listener.onAddLabTest(patientAppointments.first) }
             }
 
             companion object {
@@ -66,6 +67,6 @@ class AppointmentPatientAdapter(private val listener: AppointmentPatientAdapter.
 
     interface Listener {
         fun onDelete(patient: Patient) {}
-        fun onAddLabTest(labTests: List<LabTest>) {}
+        fun onAddLabTest(patient: Patient) {}
     }
 }

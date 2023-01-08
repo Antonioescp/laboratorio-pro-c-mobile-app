@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 private const val LAB_TEST_CATEGORY_COLLECTION = "LabTestCategory"
@@ -40,6 +41,29 @@ class LabNetworkService {
             isPersistenceEnabled = true
             cacheSizeBytes = FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED
         }
+    }
+
+    suspend fun getNonLiveLabTestsByCategory(categoryTitle: String) = withContext(Dispatchers.IO) {
+        // Getting category
+        val category = db.collection(LAB_TEST_CATEGORY_COLLECTION)
+            .whereEqualTo("title", categoryTitle)
+            .limit(1)
+            .get()
+            .await()
+            .documents
+            .first()
+            .reference// getting lab test from cache
+
+        // Getting lab tests
+        val items = db.collection(LAB_TEST_COLLECTION)
+            .whereEqualTo("category", category)
+            .get()
+            .await()
+            .toLabTests(Source.CACHE)
+
+        Timber.i("Got new data $items")
+
+        return@withContext items
     }
 
     fun getLabTestsByCategory(categoryTitle: String): LiveData<List<LabTest>> {

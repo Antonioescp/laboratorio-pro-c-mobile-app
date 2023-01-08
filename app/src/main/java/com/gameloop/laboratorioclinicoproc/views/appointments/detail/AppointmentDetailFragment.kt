@@ -16,6 +16,7 @@ import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentAppointmentDetailBinding
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentPatientAdapter
+import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectlabtest.SelectLabTestDialog
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectpatients.SelectPatientDialog
 
 class AppointmentDetailFragment : Fragment() {
@@ -62,12 +63,9 @@ class AppointmentDetailFragment : Fragment() {
                 viewModel.removePatient(patient)
             }
 
-            override fun onAddLabTest(labTests: List<LabTest>) {
-                Toast.makeText(
-                    requireContext(),
-                    "Trying to add labtest",
-                    Toast.LENGTH_SHORT
-                ).show()
+            override fun onAddLabTest(patient: Patient) {
+                val fm = parentFragmentManager
+                SelectLabTestDialog(viewModel.labCategories).show(fm, "select_lab_test")
             }
         })
 
