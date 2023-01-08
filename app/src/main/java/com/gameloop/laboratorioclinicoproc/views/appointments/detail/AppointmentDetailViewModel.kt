@@ -85,9 +85,26 @@ class AppointmentDetailViewModel : ViewModel() {
                 throw IllegalArgumentException("$labTest already set for $patient")
             } else {
                 patientTests.add(Pair(labTest, ""))
+                _eventPatientListChange.value = true
             }
         } else {
             throw IllegalArgumentException("$patient not in appointments")
         }
     }
+
+    fun removeLabTestFor(patient: Patient, labTest: LabTest) {
+        if (_appointment.tests.containsKey(patient)) {
+            val tests = _appointment.tests[patient]!!
+            if (tests.map { it.first }.contains(labTest)) {
+                tests.remove(Pair(labTest, ""))
+                _eventPatientListChange.value = true
+            } else {
+                throw IllegalArgumentException("$labTest not in patient appointment")
+            }
+        } else {
+            throw IllegalArgumentException("$patient not in map")
+        }
+    }
+
+
 }

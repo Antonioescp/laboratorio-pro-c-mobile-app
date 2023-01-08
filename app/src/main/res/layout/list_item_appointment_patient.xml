@@ -71,6 +71,8 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/list_item_appointment_lab_test"
                     tools:itemCount="1"
+                    android:paddingBottom="20dp"
+                    android:clipToPadding="false"
                     />
 
             </LinearLayout>

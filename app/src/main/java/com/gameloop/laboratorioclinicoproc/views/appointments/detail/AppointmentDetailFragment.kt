@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentAppointmentDetailBinding
+import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentLabTestAdapter
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentPatientAdapter
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectlabtest.SelectLabTestDialog
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectpatients.SelectPatientDialog
@@ -58,25 +60,37 @@ class AppointmentDetailFragment : Fragment() {
     }
 
     private fun setUpPatientsList() {
-        val adapter = AppointmentPatientAdapter(object: AppointmentPatientAdapter.Listener {
-            override fun onDelete(patient: Patient) {
-                viewModel.removePatient(patient)
-            }
+        val adapter = AppointmentPatientAdapter(
+            object: AppointmentPatientAdapter.Listener {
+                override fun onDelete(patient: Patient) {
+                    viewModel.removePatient(patient)
+                }
 
-            override fun onAddLabTest(patient: Patient) {
-                val fm = parentFragmentManager
-                val selectLabDialog = SelectLabTestDialog(
-                    viewModel.getLabTestsFor(patient),
-                    viewModel.labCategories,
-                    object: SelectLabTestDialog.Listener {
-                        override fun onConfirm(labTests: List<LabTest>) {
-                            labTests.forEach { labTest -> viewModel.addLabTestFor(patient, labTest) }
+                override fun onSeeLabTest(labTest: LabTest) {
+                    val action = AppointmentDetailFragmentDirections
+                        .actionAppointmentDetailFragmentToLabTestDetailFragment(labTest)
+                    findNavController().navigate(action)
+                }
+
+                override fun onDeleteLabTest(patient: Patient, labTest: LabTest) {
+                    viewModel.removeLabTestFor(patient, labTest)
+                }
+
+                override fun onAddLabTest(patient: Patient) {
+                    val fm = parentFragmentManager
+                    val selectLabDialog = SelectLabTestDialog(
+                        viewModel.getLabTestsFor(patient),
+                        viewModel.labCategories,
+                        object: SelectLabTestDialog.Listener {
+                            override fun onConfirm(labTests: List<LabTest>) {
+                                labTests.forEach { labTest -> viewModel.addLabTestFor(patient, labTest) }
+                            }
                         }
-                    }
-                )
-                selectLabDialog.show(fm, "select_lab_test")
+                    )
+                    selectLabDialog.show(fm, "select_lab_test")
+                }
             }
-        })
+        )
 
         viewModel.eventPatientListChange.observe(viewLifecycleOwner) { hasChanged ->
             hasChanged?.let {
@@ -91,6 +105,7 @@ class AppointmentDetailFragment : Fragment() {
             }
         }
 
+        adapter.submitList(viewModel.selectedPatientsAppointments)
         binding.rvPatients.adapter = adapter
     }
 
@@ -102,7 +117,7 @@ class AppointmentDetailFragment : Fragment() {
                     AutoTransition()
                 )
 
-                var drawable = ContextCompat.getDrawable(
+                val drawable = ContextCompat.getDrawable(
                     requireContext(),
                     when (areHidden) {
                         true -> R.drawable.ic_baseline_keyboard_arrow_right_24

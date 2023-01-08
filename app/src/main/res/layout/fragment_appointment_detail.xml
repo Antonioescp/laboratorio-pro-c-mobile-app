@@ -44,19 +44,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/calendar"
+            android:minHeight="48dp"
             android:src="@drawable/ic_baseline_calendar_today_24"
             android:tint="@color/water_drop"
             app:layout_constraintEnd_toStartOf="@id/tvDate"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilDescription" />
+            app:layout_constraintTop_toBottomOf="@id/tilDescription"
+            tools:ignore="ImageContrastCheck,ImageContrastCheck" />
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             tools:text="Fecha:"
             app:layout_constraintStart_toEndOf="@id/btnCalendar"
             app:layout_constraintTop_toBottomOf="@id/tilDescription"
@@ -68,56 +71,62 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvAppointments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnAddAppointment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnCalendar"
+            app:layout_constraintVertical_bias="0"
+            android:layout_marginBottom="20dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvPatients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> viewModel.togglePatients()}"
+                    android:padding="10dp"
                     android:text="@string/patients"
                     android:textSize="20sp"
-                    android:padding="10dp"
-                    app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    android:onClick="@{() -> viewModel.togglePatients()}"
-                    />
+                    app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
                 <LinearLayout
                     android:id="@+id/llHider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="410dp"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.arePatientsHidden ? View.GONE : View.VISIBLE}"
-                    >
+                    android:visibility="@{viewModel.arePatientsHidden ? View.GONE : View.VISIBLE}">
+
                     <Button
                         android:id="@+id/btnAddPatient"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_patient"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvPatients"
+                        android:text="@string/add_patient" />
+
+                    <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:paddingHorizontal="5dp"
-                        android:paddingBottom="10dp"
-                        android:clipToPadding="false"
-                        tools:listitem="@layout/list_item_appointment_patient"
-                        tools:itemCount="1"
-                        />
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPatients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:paddingHorizontal="5dp"
+                            android:paddingBottom="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="3"
+                            tools:listitem="@layout/list_item_appointment_patient" />
+                    </androidx.core.widget.NestedScrollView>
+
                 </LinearLayout>
 
                 <TextView
@@ -125,13 +134,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/dark"
-                    android:text="@string/total"
-                    android:textSize="18sp"
                     android:padding="10dp"
-                    />
+                    android:text="@string/total"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
+
+        <Button
+            android:id="@+id/btnAddAppointment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cvAppointments"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/add_appointment"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
