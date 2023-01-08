@@ -2,6 +2,7 @@ package com.gameloop.laboratorioclinicoproc.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
 import com.gameloop.laboratorioclinicoproc.database.model.toLabTests
@@ -18,6 +19,7 @@ import timber.log.Timber
 
 private const val LAB_TEST_CATEGORY_COLLECTION = "LabTestCategory"
 private const val LAB_TEST_COLLECTION = "LabTest"
+private const val LAB_APPOINTMENT_COLLECTION = "Appointment"
 
 class LabNetworkService {
     private val serviceScope = CoroutineScope(Dispatchers.IO)
@@ -152,5 +154,12 @@ class LabNetworkService {
             }
         }
         return list
+    }
+
+    suspend fun addAppointment(newAppointment: Appointment) {
+        withContext(Dispatchers.IO) {
+            db.collection(LAB_APPOINTMENT_COLLECTION).document()
+                .set(newAppointment.toNetworkModel()).await()
+        }
     }
 }

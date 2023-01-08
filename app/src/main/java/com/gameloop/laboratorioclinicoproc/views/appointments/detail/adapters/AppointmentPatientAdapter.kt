@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.ListItemAppointmentPatientBinding
+import com.gameloop.laboratorioclinicoproc.setPrice
 
 class AppointmentPatientAdapter(
     private val listener: Listener,
@@ -38,9 +39,19 @@ class AppointmentPatientAdapter(
 
                 binding.rvTests.adapter = adapter
                 adapter.submitList(patientAppointments.second)
+
+                val tests = patientAppointments.second
+                setUpTotal(tests)
             }
 
-            companion object {
+        private fun setUpTotal(tests: List<LabTest>) {
+            var total = 0.0
+            tests.forEach { test -> total += test.price }
+
+            binding.tvTotalPrice.setPrice(total)
+        }
+
+        companion object {
                 fun from(parent: ViewGroup): ViewHolder {
                     val inflater = LayoutInflater.from(parent.context)
                     val binding = ListItemAppointmentPatientBinding.inflate(

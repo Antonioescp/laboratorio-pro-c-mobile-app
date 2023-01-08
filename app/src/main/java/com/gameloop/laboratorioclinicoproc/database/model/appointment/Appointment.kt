@@ -28,4 +28,22 @@ data class Appointment(
             }
             return total
         }
+
+    fun toNetworkModel(): AppointmentNetwork {
+        val newMap = tests.map { (patient, tests) ->
+            return@map Pair(patient.fullName, tests)
+        }
+
+        val appointmentNetwork = AppointmentNetwork(
+            date = date,
+            description = description,
+            state = state
+        )
+
+        newMap.forEach { (name, tests) ->
+            appointmentNetwork.tests[name] = tests
+        }
+
+        return appointmentNetwork
+    }
 }

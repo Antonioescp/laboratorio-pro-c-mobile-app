@@ -151,6 +151,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/add_appointment"
+            android:onClick="@{() -> viewModel.onAddAppointment()}"
+            android:enabled="@{!viewModel.isAppointmentBeingCreated}"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

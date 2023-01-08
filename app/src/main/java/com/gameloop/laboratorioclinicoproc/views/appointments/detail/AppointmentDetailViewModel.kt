@@ -1,23 +1,27 @@
 package com.gameloop.laboratorioclinicoproc.views.appointments.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.network.LabNetworkService
+import kotlinx.coroutines.launch
+import java.util.*
 
 class AppointmentDetailViewModel : ViewModel() {
 
     val labCategories = LabNetworkService.instance.getLabTestCategories()
+
+    private var _isAppointmentBeingCreated = MutableLiveData(false)
+    val isAppointmentBeingCreated: LiveData<Boolean> = _isAppointmentBeingCreated
 
     private var _arePatientsHidden = MutableLiveData(true)
     val arePatientsHidden: LiveData<Boolean>
         get() = _arePatientsHidden
 
     private var _appointment = Appointment()
+    val totalPrice
+        get() = _appointment.totalPrice
 
     val selectedPatients: Set<Patient>
         get() = _appointment.tests.keys
@@ -40,6 +44,20 @@ class AppointmentDetailViewModel : ViewModel() {
 
     private var _eventPatientListChange = MutableLiveData<Boolean>()
     val eventPatientListChange: LiveData<Boolean> = _eventPatientListChange
+
+    private var _eventNavigateBack = MutableLiveData<Boolean>()
+    val eventNavigateBack: LiveData<Boolean> = _eventNavigateBack
+
+    private var _eventAppointmentAdded = MutableLiveData<Boolean?>()
+    val eventAppointmentAdded: LiveData<Boolean?> = _eventAppointmentAdded
+
+    fun onAppointmentAddedCompleted() {
+        _eventAppointmentAdded.value = null
+    }
+
+    fun onNavigateBackCompleted() {
+        _eventNavigateBack.value = false
+    }
 
     fun onPatientListChangeCompleted() {
         _eventPatientListChange.value = false
@@ -106,5 +124,36 @@ class AppointmentDetailViewModel : ViewModel() {
         }
     }
 
+    // Adding appointment
+    private val _eventAddAppointment = MutableLiveData(false)
+    val eventAddAppointment: LiveData<Boolean> = _eventAddAppointment
 
+    fun onAddAppointment() {
+        _eventAddAppointment.value = true
+    }
+
+    fun onAddAppointmentCompleted() {
+        _eventAddAppointment.value = null
+    }
+
+    fun addAppointment() {
+        viewModelScope.launch {
+            _isAppointmentBeingCreated.value = true
+            LabNetworkService.instance.addAppointment(_appointment)
+            _isAppointmentBeingCreated.value = false
+            _eventNavigateBack.value = true
+            _eventAppointmentAdded.value = true
+        }
+    }
+
+    val date: Date
+        get() {
+            return _appointment.date
+        }
+
+    fun setDate(year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        _appointment.date = calendar.time
+    }
 }

@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tvTitle"
                 app:price="@{labTest.price}"
                 tools:text="C$1500"
-                android:textStyle="bold"/>
+                />
 
             <Button
                 android:id="@+id/btnDetails"

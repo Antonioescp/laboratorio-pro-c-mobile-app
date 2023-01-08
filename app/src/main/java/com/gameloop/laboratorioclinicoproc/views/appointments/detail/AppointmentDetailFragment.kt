@@ -16,10 +16,15 @@ import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentAppointmentDetailBinding
-import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentLabTestAdapter
+import com.gameloop.laboratorioclinicoproc.setPrice
+import com.gameloop.laboratorioclinicoproc.validateEmpty
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentPatientAdapter
+import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.SelectDateDialog
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectlabtest.SelectLabTestDialog
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.dialogs.selectpatients.SelectPatientDialog
+import java.text.DateFormat
+import java.time.LocalDate
+import java.util.*
 
 class AppointmentDetailFragment : Fragment() {
     private lateinit var binding: FragmentAppointmentDetailBinding
@@ -42,6 +47,7 @@ class AppointmentDetailFragment : Fragment() {
         setUpPatientsDropDownAnimation()
         setUpPatientAddButton()
         setUpPatientsList()
+        setUpDatePicker()
 
         viewModel.patientAlreadyAdded.observe(viewLifecycleOwner) { patientAlreadyInMap ->
             patientAlreadyInMap?.let {
@@ -56,7 +62,74 @@ class AppointmentDetailFragment : Fragment() {
             }
         }
 
+        viewModel.eventNavigateBack.observe(viewLifecycleOwner) { shouldGoBack ->
+            shouldGoBack?.let {
+                if (shouldGoBack) {
+                    findNavController().navigateUp()
+                    viewModel.onNavigateBackCompleted()
+                }
+            }
+        }
+
+        viewModel.eventAppointmentAdded.observe(viewLifecycleOwner) { wasAdded ->
+            wasAdded?.let {
+                if (wasAdded) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Cita agregada con éxito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        viewModel.eventAddAppointment.observe(viewLifecycleOwner) { shouldAdd ->
+            shouldAdd?.let {
+                if (shouldAdd && verifyFields()) {
+                    viewModel.addAppointment()
+                    viewModel.onAddAppointmentCompleted()
+                }
+            }
+        }
+
         return binding.root
+    }
+
+    private fun setUpDatePicker() {
+        binding.btnCalendar.setOnClickListener {
+            SelectDateDialog { _, year, month, dayOfMonth ->
+                viewModel.setDate(year, month, dayOfMonth)
+
+                val formattedDate = DateFormat
+                    .getDateInstance(DateFormat.FULL, Locale.forLanguageTag("es"))
+                    .format(viewModel.date)
+
+                val dateString = "Fecha: $formattedDate"
+                binding.tvDate.text = dateString
+            }.show(parentFragmentManager, "select_date")
+        }
+    }
+
+    private fun verifyFields(): Boolean {
+        if (viewModel.totalPrice == 0.0) {
+            Toast.makeText(
+                requireActivity(),
+                "No se ha seleccionado ningún exámen",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        if (binding.tvDate.text.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Por favor, elige una fecha",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        return binding.tietDescription.validateEmpty("No puede estar vacío")
     }
 
     private fun setUpPatientsList() {
@@ -100,11 +173,13 @@ class AppointmentDetailFragment : Fragment() {
                         AutoTransition()
                     )
                     adapter.submitList(viewModel.selectedPatientsAppointments)
+                    binding.tvTotal.setPrice(viewModel.totalPrice)
                     viewModel.onPatientListChangeCompleted()
                 }
             }
         }
 
+        binding.tvTotal.setPrice(viewModel.totalPrice)
         adapter.submitList(viewModel.selectedPatientsAppointments)
         binding.rvPatients.adapter = adapter
     }
