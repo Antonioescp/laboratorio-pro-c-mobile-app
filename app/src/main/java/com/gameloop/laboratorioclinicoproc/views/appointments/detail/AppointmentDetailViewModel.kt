@@ -69,4 +69,25 @@ class AppointmentDetailViewModel : ViewModel() {
             _eventPatientListChange.value = true
         }
     }
+
+    fun getLabTestsFor(patient: Patient): List<LabTest> {
+        if (_appointment.tests.containsKey(patient)) {
+            val patientAppointments = _appointment.tests[patient]!!
+            return patientAppointments.map { it.first }
+        }
+        throw IllegalArgumentException("$patient not in appointments")
+    }
+
+    fun addLabTestFor(patient: Patient, labTest: LabTest) {
+        if (_appointment.tests.containsKey(patient)) {
+            val patientTests = _appointment.tests[patient]!!
+            if (patientTests.map { it.first }.contains(labTest)) {
+                throw IllegalArgumentException("$labTest already set for $patient")
+            } else {
+                patientTests.add(Pair(labTest, ""))
+            }
+        } else {
+            throw IllegalArgumentException("$patient not in appointments")
+        }
+    }
 }

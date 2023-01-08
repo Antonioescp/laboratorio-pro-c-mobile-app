@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DialogLabCategoryAdapter(
+    private val alreadySelectedLabTest: List<LabTest>,
     private val listener: DialogLabTestAdapter.Listener
 ) : ListAdapter<LabTestCategory, DialogLabCategoryAdapter.ViewHolder>(DiffCallback()) {
 
@@ -32,24 +32,29 @@ class DialogLabCategoryAdapter(
         private var isExpanded = false
         private lateinit var listener: DialogLabTestAdapter.Listener
 
-        fun bind(category: LabTestCategory, listener: DialogLabTestAdapter.Listener) {
+        fun bind(
+            category: LabTestCategory,
+            alreadySelectedLabTest: List<LabTest>,
+            listener: DialogLabTestAdapter.Listener
+        ) {
             binding.category = category
             binding.tvTitle.setOnClickListener { toggleExpand() }
 
             this.listener = listener
 
-            setUpLabTestsList(category)
+            setUpLabTestsList(category, alreadySelectedLabTest)
         }
 
-        private fun setUpLabTestsList(category: LabTestCategory) {
+        private fun setUpLabTestsList(category: LabTestCategory, alreadySelectedLabTest: List<LabTest>) {
             val adapter = DialogLabTestAdapter(listener)
             binding.rvLabTests.adapter = adapter
 
             // Getting lab tests for current category
             CoroutineScope(Dispatchers.IO).launch {
                 val tests = LabNetworkService.instance.getNonLiveLabTestsByCategory(category.title)
+                val unselectedTests = tests.filter { alreadySelectedLabTest.contains(it).not() }
                 withContext(Dispatchers.Main) {
-                    adapter.submitList(tests)
+                    adapter.submitList(unselectedTests)
                 }
             }
         }
@@ -104,7 +109,7 @@ class DialogLabCategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), listener)
+        holder.bind(getItem(position), alreadySelectedLabTest, listener)
     }
 
 }

@@ -65,7 +65,16 @@ class AppointmentDetailFragment : Fragment() {
 
             override fun onAddLabTest(patient: Patient) {
                 val fm = parentFragmentManager
-                SelectLabTestDialog(viewModel.labCategories).show(fm, "select_lab_test")
+                val selectLabDialog = SelectLabTestDialog(
+                    viewModel.getLabTestsFor(patient),
+                    viewModel.labCategories,
+                    object: SelectLabTestDialog.Listener {
+                        override fun onConfirm(labTests: List<LabTest>) {
+                            labTests.forEach { labTest -> viewModel.addLabTestFor(patient, labTest) }
+                        }
+                    }
+                )
+                selectLabDialog.show(fm, "select_lab_test")
             }
         })
 

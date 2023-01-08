@@ -11,10 +11,18 @@ import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTes
 import com.gameloop.laboratorioclinicoproc.databinding.DialogSelectLabTestBinding
 
 class SelectLabTestDialog(
-    private val availableLabTestCategories: LiveData<List<LabTestCategory>>
+    private val alreadySelectedLabTest: List<LabTest>,
+    private val availableLabTestCategories: LiveData<List<LabTestCategory>>,
+    private val listener: Listener
 ) : DialogFragment() {
 
+    interface Listener {
+        fun onConfirm(labTests: List<LabTest>) {}
+        fun onCancel(labTests: List<LabTest>) {}
+    }
+
     private lateinit var binding: DialogSelectLabTestBinding
+    private val selectedLabTests = mutableListOf<LabTest>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireActivity())
@@ -29,24 +37,32 @@ class SelectLabTestDialog(
     }
 
     private fun setUpConfirmButton() {
-        binding.btnConfirm.setOnClickListener { dismiss() }
+        binding.btnConfirm.setOnClickListener {
+            dismiss()
+            listener.onConfirm(selectedLabTests)
+        }
     }
 
     private fun setUpCancelButton() {
-        binding.btnCancel.setOnClickListener { dismiss() }
+        binding.btnCancel.setOnClickListener {
+            dismiss()
+            listener.onCancel(selectedLabTests)
+        }
     }
 
     private fun setUpCategoryList() {
-        val adapter = DialogLabCategoryAdapter(object: DialogLabTestAdapter.Listener{
-            override fun onSelectChange(labTest: LabTest, isSelected: Boolean) {
-                val message = if (isSelected) "was selected" else "was unselected"
-                Toast.makeText(
-                    requireContext(),
-                    "${labTest.title} $message",
-                    Toast.LENGTH_SHORT
-                ).show()
+        val adapter = DialogLabCategoryAdapter(
+            alreadySelectedLabTest,
+            object: DialogLabTestAdapter.Listener {
+                override fun onSelectChange(labTest: LabTest, isSelected: Boolean) {
+                    if (isSelected && selectedLabTests.contains(labTest).not()) {
+                        selectedLabTests.add(labTest)
+                    } else if (isSelected.not() && selectedLabTests.contains(labTest)) {
+                        selectedLabTests.remove(labTest)
+                    }
+                }
             }
-        })
+        )
 
         binding.rvCategories.adapter = adapter
 

@@ -55,15 +55,11 @@ class LabNetworkService {
             .reference// getting lab test from cache
 
         // Getting lab tests
-        val items = db.collection(LAB_TEST_COLLECTION)
+        db.collection(LAB_TEST_COLLECTION)
             .whereEqualTo("category", category)
             .get()
             .await()
             .toLabTests(Source.CACHE)
-
-        Timber.i("Got new data $items")
-
-        return@withContext items
     }
 
     fun getLabTestsByCategory(categoryTitle: String): LiveData<List<LabTest>> {
