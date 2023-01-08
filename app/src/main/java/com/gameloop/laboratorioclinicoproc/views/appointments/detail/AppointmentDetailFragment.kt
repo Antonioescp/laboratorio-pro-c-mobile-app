@@ -16,6 +16,7 @@ import com.gameloop.laboratorioclinicoproc.R
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Patient
 import com.gameloop.laboratorioclinicoproc.databinding.FragmentAppointmentDetailBinding
+import com.gameloop.laboratorioclinicoproc.setDate
 import com.gameloop.laboratorioclinicoproc.setPrice
 import com.gameloop.laboratorioclinicoproc.validateEmpty
 import com.gameloop.laboratorioclinicoproc.views.appointments.detail.adapters.AppointmentPatientAdapter
@@ -86,6 +87,7 @@ class AppointmentDetailFragment : Fragment() {
         viewModel.eventAddAppointment.observe(viewLifecycleOwner) { shouldAdd ->
             shouldAdd?.let {
                 if (shouldAdd && verifyFields()) {
+                    viewModel.setDescription(binding.tietDescription.text.toString())
                     viewModel.addAppointment()
                     viewModel.onAddAppointmentCompleted()
                 }
@@ -99,13 +101,7 @@ class AppointmentDetailFragment : Fragment() {
         binding.btnCalendar.setOnClickListener {
             SelectDateDialog { _, year, month, dayOfMonth ->
                 viewModel.setDate(year, month, dayOfMonth)
-
-                val formattedDate = DateFormat
-                    .getDateInstance(DateFormat.FULL, Locale.forLanguageTag("es"))
-                    .format(viewModel.date)
-
-                val dateString = "Fecha: $formattedDate"
-                binding.tvDate.text = dateString
+                binding.tvDate.setDate(viewModel.date)
             }.show(parentFragmentManager, "select_date")
         }
     }

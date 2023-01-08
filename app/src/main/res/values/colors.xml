@@ -13,4 +13,9 @@
     <color name="darker">#8C8C8C</color>
     <color name="water_drop">#44b4c4</color>
     <color name="crimsom">#F31919</color>
+    <color name="darker_water_drop">#158C9C</color>
+    <color name="pending_appointment">#7A7A7A</color>
+    <color name="processing_appointment">#C7D12D</color>
+    <color name="completed_appointment">#1EDD21</color>
+    <color name="cancelled_appointment">#EC1818</color>
 </resources>

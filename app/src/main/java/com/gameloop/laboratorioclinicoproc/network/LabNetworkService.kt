@@ -3,6 +3,7 @@ package com.gameloop.laboratorioclinicoproc.network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment
+import com.gameloop.laboratorioclinicoproc.database.model.appointment.AppointmentNetwork
 import com.gameloop.laboratorioclinicoproc.database.model.labtest.LabTest
 import com.gameloop.laboratorioclinicoproc.database.model.labtestcategory.LabTestCategory
 import com.gameloop.laboratorioclinicoproc.database.model.toLabTests
@@ -161,5 +162,27 @@ class LabNetworkService {
             db.collection(LAB_APPOINTMENT_COLLECTION).document()
                 .set(newAppointment.toNetworkModel()).await()
         }
+    }
+
+    fun getAppointments(): LiveData<List<AppointmentNetwork>> {
+        val appointments = MutableLiveData<List<AppointmentNetwork>>()
+
+        serviceScope.launch {
+            // getting first from cache
+            val cache = db.collection(LAB_APPOINTMENT_COLLECTION).get(Source.CACHE).await()
+            appointments.postValue(cache.toObjects(AppointmentNetwork::class.java))
+
+            db.collection(LAB_APPOINTMENT_COLLECTION).addSnapshotListener{ snapshot, e ->
+                if (e != null) {
+                    Timber.e("Network error: %s", e.message)
+                }
+
+                snapshot?.let {
+                    appointments.postValue(snapshot.toObjects(AppointmentNetwork::class.java))
+                }
+            }
+        }
+
+        return appointments
     }
 }

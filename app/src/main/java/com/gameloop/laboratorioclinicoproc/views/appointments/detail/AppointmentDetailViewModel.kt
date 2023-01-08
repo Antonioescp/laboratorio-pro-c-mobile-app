@@ -156,4 +156,8 @@ class AppointmentDetailViewModel : ViewModel() {
         calendar.set(year, month, dayOfMonth)
         _appointment.date = calendar.time
     }
+
+    fun setDescription(description: String) {
+        _appointment.description = description
+    }
 }

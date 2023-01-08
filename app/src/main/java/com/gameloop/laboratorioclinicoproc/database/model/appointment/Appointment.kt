@@ -41,7 +41,13 @@ data class Appointment(
         )
 
         newMap.forEach { (name, tests) ->
-            appointmentNetwork.tests[name] = tests
+            val newTests = mutableListOf<DefaultPair<LabTest, String>>()
+
+            tests.forEach { (first, second) ->
+                newTests.add(DefaultPair(first, second))
+            }
+
+            appointmentNetwork.tests[name] = newTests
         }
 
         return appointmentNetwork

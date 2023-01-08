@@ -1,5 +1,9 @@
 package com.gameloop.laboratorioclinicoproc
 
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -7,7 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.bumptech.glide.Glide
+import com.gameloop.laboratorioclinicoproc.database.model.appointment.Appointment
 import com.gameloop.laboratorioclinicoproc.database.model.patient.Sex
+import java.text.DateFormat
+import java.util.*
 
 @BindingAdapter("age")
 fun TextView.setAge(age: Int?) {
@@ -81,6 +88,55 @@ fun ImageView.setImgByUrl(url: String) {
 }
 
 @BindingAdapter("price")
-fun TextView.setPrice(price: Double) {
-    text = String.format("C\$%.2f", price)
+fun TextView.setPrice(price: Double?) {
+    price?.let {
+        text = String.format("C\$%.2f", price)
+    }
+}
+
+// Appointment binding adapters
+@BindingAdapter("appointmentStatus")
+fun TextView.setAppointmentStatus(status: Appointment.State?) {
+    status?.let {
+        var color: Int? = null
+        var message: String = ""
+        when (status) {
+            Appointment.State.Pending -> {
+                color = ContextCompat.getColor(context, R.color.pending_appointment)
+                message = "Pendiente"
+            }
+            Appointment.State.Cancelled -> {
+                color = ContextCompat.getColor(context, R.color.cancelled_appointment)
+                message = "Cancelado"
+            }
+            Appointment.State.InProgress -> {
+                color = ContextCompat.getColor(context, R.color.processing_appointment)
+                message = "En progreso"
+            }
+            Appointment.State.Completed -> {
+                color = ContextCompat.getColor(context, R.color.completed_appointment)
+                message = "Completado"
+            }
+        }
+
+        // Updating message and textView drawable color
+        text = message
+        compoundDrawables.forEach { drawable ->
+            drawable?.let {
+                drawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+            }
+        }
+    }
+}
+
+@BindingAdapter("date")
+fun TextView.setDate(date: Date?) {
+    date?.let {
+        val formattedDate = DateFormat
+            .getDateInstance(DateFormat.SHORT, Locale.forLanguageTag("es"))
+            .format(date)
+
+        val dateString = "Fecha: $formattedDate"
+        text = dateString
+    }
 }
