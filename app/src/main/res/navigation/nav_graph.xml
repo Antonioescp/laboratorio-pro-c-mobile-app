@@ -91,4 +91,9 @@
             android:id="@+id/action_appointmentDetailFragment_to_labTestDetailFragment"
             app:destination="@id/labTestDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/testsResultsFragment"
+        android:name="com.gameloop.laboratorioclinicoproc.views.testresults.TestsResultsFragment"
+        android:label="@string/results"
+        tools:layout="@layout/fragment_tests_results" />
 </navigation>

@@ -39,4 +39,6 @@
     <string name="accept">Aceptar</string>
     <string name="category">Categoria</string>
     <string name="calendar">Calendario</string>
+    <string name="waiting_for_results_msg">¡Tus resultados estarán listos pronto!</string>
+    <string name="results">Resultados</string>
 </resources>

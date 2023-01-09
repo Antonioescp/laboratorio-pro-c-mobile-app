@@ -16,4 +16,9 @@
         android:title="@string/appointments"
         android:icon="@drawable/ic_baseline_medical_services_24"
         />
+    <item
+        android:id="@+id/testsResultsFragment"
+        android:title="@string/results"
+        android:icon="@drawable/ic_baseline_edit_note_24"
+        />
 </menu>

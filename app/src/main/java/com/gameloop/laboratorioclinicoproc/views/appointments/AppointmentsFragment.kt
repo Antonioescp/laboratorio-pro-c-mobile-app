@@ -34,14 +34,6 @@ class AppointmentsFragment : Fragment(), MenuProvider {
 
     private fun setUpAppointmentsList() {
         val adapter = AppointmentAdapter(object: AppointmentAdapter.Listener {
-            override fun onClick(view: View) {
-                Toast.makeText(
-                    requireContext(),
-                    "appointment clicked",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
             override fun onAction(appointmentNetwork: AppointmentNetwork) {
                 if (appointmentNetwork.isCancellable) {
                     appointmentNetwork.state = Appointment.State.Cancelled

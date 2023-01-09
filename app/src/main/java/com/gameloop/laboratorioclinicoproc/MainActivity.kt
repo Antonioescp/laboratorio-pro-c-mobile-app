@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.myPatientsFragment -> View.VISIBLE
                     R.id.testsFragment -> View.VISIBLE
                     R.id.appointmentsFragment -> View.VISIBLE
+                    R.id.testsResultsFragment -> View.VISIBLE
                     else -> View.GONE
                 }
             }
